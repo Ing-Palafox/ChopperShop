@@ -23,6 +23,9 @@ Route::middleware('auth')->group(function () {
     // Rutas para categorías y productos
     Route::resource('categorias', CategoriaController::class);
     Route::resource('productos', ProductoController::class);
+    //Ruta para crear producto
+    Route::get('/productos/create', [ProductoController::class, 'create'])->name('productos.create');
+
 
 
 });
