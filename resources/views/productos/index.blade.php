@@ -10,6 +10,7 @@
             <tr>
                 <th>#</th>
                 <th>Nombre</th>
+                <th>Descripción</th> <!-- Nueva columna -->
                 <th>Categoría</th>
                 <th>Precio</th>
                 <th>Acciones</th>
@@ -20,6 +21,7 @@
             <tr>
                 <td>{{ $producto->id }}</td>
                 <td>{{ $producto->nombre }}</td>
+                <td>{{ $producto->descripcion ?? 'Sin descripción' }}</td> <!-- Mostrar descripción -->
                 <td>{{ $producto->categoria->nombre }}</td>
                 <td>{{ $producto->precio }}</td>
                 <td>
