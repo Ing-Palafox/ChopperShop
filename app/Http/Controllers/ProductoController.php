@@ -109,7 +109,7 @@ class ProductoController extends Controller
         ]);
 
         Producto::create($request->all());
-        return redirect()->route('productos.index')->with('success', 'Producto creado correctamente');
+        return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
     }
 
     // Mostrar el formulario para editar un producto
