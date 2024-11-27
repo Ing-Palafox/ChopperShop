@@ -20,10 +20,10 @@
                 <td>{{ $categoria->nombre }}</td>
                 <td>
                     <a href="{{ route('categorias.edit', $categoria->id) }}" class="btn btn-warning">Editar</a>
-                    <form action="{{ route('categorias.destroy', $categoria->id) }}" method="POST" style="display:inline;">
+                    <form action="{{ route('categorias.destroy', $categoria->id) }}" method="POST" class="d-inline delete-form">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        <button type="button" class="btn btn-danger btn-delete">Eliminar</button>
                     </form>
                 </td>
             </tr>

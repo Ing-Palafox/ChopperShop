@@ -53,5 +53,80 @@
 
     <!-- Agregar Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Agregar SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.min.js"></script>
+
+    <!-- Script para la confirmación de eliminación -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteForms = document.querySelectorAll('.delete-form');
+
+            deleteForms.forEach(form => {
+                form.querySelector('.btn-delete').addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: "Esta acción no se puede deshacer.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+
+    <!-- Agregar estilos personalizados para la alerta -->
+    <style>
+        /* Personaliza el estilo del cuadro de alerta */
+        .alert-popup {
+            border-radius: 15px;  /* Bordes redondeados */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);  /* Sombra más suave */
+            padding: 30px;  /* Espaciado interior */
+        }
+
+        /* Personaliza el título de la alerta */
+        .alert-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Estilos para los botones */
+        .alert-btn {
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .alert-btn:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .alert-btn:focus {
+            box-shadow: none;
+        }
+
+        .swal2-cancel {
+            background-color: #d33;  /* Color de botón de cancelación */
+        }
+
+        .swal2-confirm {
+            background-color: #3085d6;  /* Color de botón de confirmación */
+        }
+    </style>
+
+
 </body>
 </html>

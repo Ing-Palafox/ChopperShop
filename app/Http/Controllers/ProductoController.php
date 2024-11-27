@@ -110,6 +110,8 @@ class ProductoController extends Controller
 
         Producto::create($request->all());
         return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
+        return redirect()->back()->with('error', 'No se pudo crear el producto. Inténtalo nuevamente.');
+
     }
 
     // Mostrar el formulario para editar un producto
