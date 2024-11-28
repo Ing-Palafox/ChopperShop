@@ -3,8 +3,10 @@
 @section('content')
 <div class="container">
     <h1>Agregar Producto</h1>
+
+    <!-- <style> .form-group label, .form-control, .btn { color: white; } </style> -->
     
-    <form action="{{ route('productos.store') }}" method="POST">
+    <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
             <label for="nombre">Nombre</label>
@@ -13,10 +15,8 @@
 
         <div class="form-group">
              <label for="descripcion">Descripción</label>
-             <textarea name="descripcion" id="descripcion" class="form-control" rows="3">{{ old('descripcion') }}
-             </textarea>
+             <textarea name="descripcion" id="descripcion" class="form-control" rows="3">{{ old('descripcion') }}</textarea>
         </div>
-
 
         <div class="form-group">
             <label for="categoria_id">Categoría</label>
@@ -25,6 +25,12 @@
                     <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
                 @endforeach
             </select>
+        </div>
+
+        <!-- Imagen -->
+        <div class="mb-3">
+             <label for="imagen" class="form-label">Imagen</label>
+             <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
         </div>
 
         <div class="form-group">

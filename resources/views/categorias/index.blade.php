@@ -5,6 +5,9 @@
     <h1>Lista de Categorías</h1>
     <a href="{{ route('categorias.create') }}" class="btn btn-primary">Agregar Categoría</a>
     
+    <style> .table th, .table td { color: white; }
+    </style>
+
     <table class="table mt-4">
         <thead>
             <tr>

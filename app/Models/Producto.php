@@ -16,6 +16,7 @@ class Producto extends Model
         'precio',
         'cantidad',
         'categoria_id',
+        'imagen', // Agregar el campo imagen
     ];
 
     public function categoria()

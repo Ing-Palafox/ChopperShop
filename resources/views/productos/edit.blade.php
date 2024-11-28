@@ -4,6 +4,8 @@
 <div class="container">
     <h1>Editar Producto</h1>
 
+    
+
     <!-- Mostrar mensajes de éxito o error -->
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -13,7 +15,9 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    <form action="{{ route('productos.update', $producto->id) }}" method="POST">
+    
+
+    <form action="{{ route('productos.update', $producto->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT') <!-- Usamos PUT para actualizar el producto -->
         
@@ -47,6 +51,22 @@
                 @endforeach
             </select>
         </div>
+
+        <div class="mb-3">
+            <label for="imagen_actual" class="form-label">Imagen Actual</label>
+            <br>
+            @if($producto->imagen)
+                <img src="{{ Storage::url($producto->imagen) }}" alt="Imagen actual" class="img-thumbnail" width="150">
+            @else
+                <p>No hay imagen disponible</p>
+            @endif
+        </div>
+
+        <div class="mb-3">
+            <label for="imagen" class="form-label">Nueva Imagen (opcional)</label>
+            <input type="file" class="form-control" id="imagen" name="imagen">
+        </div>
+
 
         <button type="submit" class="btn btn-primary">Actualizar Producto</button>
     </form>

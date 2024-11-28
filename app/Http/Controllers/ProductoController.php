@@ -78,6 +78,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
+// use Storage;
+use Illuminate\Support\Facades\Storage;
+
 use App\Models\Categoria;
 use Illuminate\Http\Request;
 
@@ -106,9 +109,28 @@ class ProductoController extends Controller
             'precio' => 'required|numeric',
             'cantidad' => 'required|integer',
             'categoria_id' => 'required|exists:categorias,id',
+            'imagen' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // Validación para imagen
         ]);
+            
+            // Subir la imagen
+    $imagenPath = null;
+    if ($request->hasFile('imagen')) {
+        $imagenPath = $request->file('imagen')->store('productos', 'public');
+    } else {
+        $imagenPath = null; // Si no se sube una imagen, asignamos null
+    }
 
-        Producto::create($request->all());
+    // Crear el producto con la imagen
+    Producto::create([
+        'nombre' => $request->nombre,
+        'descripcion' => $request->descripcion,
+        'precio' => $request->precio,
+        'cantidad' => $request->cantidad,
+        'categoria_id' => $request->categoria_id,
+        'imagen' => $imagenPath,  // Guardar la ruta de la imagen
+    ]);
+
+        // Producto::create($request->all());
         return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
         return redirect()->back()->with('error', 'No se pudo crear el producto. Inténtalo nuevamente.');
 
@@ -123,18 +145,42 @@ class ProductoController extends Controller
 
     // Actualizar el producto
     public function update(Request $request, Producto $producto)
-    {
-        $request->validate([
-            'nombre' => 'required|max:150',
-            'descripcion' => 'nullable',
-            'precio' => 'required|numeric',
-            'cantidad' => 'required|integer',
-            'categoria_id' => 'required|exists:categorias,id',
-        ]);
+{
+    $request->validate([
+        'nombre' => 'required|max:150',
+        'descripcion' => 'nullable',
+        'precio' => 'required|numeric',
+        'cantidad' => 'required|integer',
+        'categoria_id' => 'required|exists:categorias,id',
+        'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        $producto->update($request->all());
-        return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');
+    // Verificar si hay una nueva imagen
+    if ($request->hasFile('imagen')) {
+        // Eliminar la imagen anterior si existe
+        if ($producto->imagen) {
+            Storage::disk('public')->delete($producto->imagen);
+        }
+
+        // Guardar la nueva imagen
+        $imagenPath = $request->file('imagen')->store('productos', 'public');
+        $producto->imagen = $imagenPath;
     }
+
+    // Actualizar los datos restantes
+    $producto->update([
+        'nombre' => $request->nombre,
+        'descripcion' => $request->descripcion,
+        'precio' => $request->precio,
+        'cantidad' => $request->cantidad,
+        'categoria_id' => $request->categoria_id,
+    ]);
+
+    // Guardar los cambios en la imagen, si se subió
+    $producto->save();
+
+    return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');
+}
 
     // Eliminar un producto
     public function destroy(Producto $producto)

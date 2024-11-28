@@ -3,6 +3,9 @@
 @section('content')
 <div class="container">
     <h1>Agregar Categoría</h1>
+
+    <style> .form-group label, .form-control, .btn { color: white; }
+    </style>
     
     <form action="{{ route('categorias.store') }}" method="POST">
         @csrf
