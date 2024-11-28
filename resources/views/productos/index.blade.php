@@ -98,5 +98,11 @@
             @endforeach
         </tbody>
     </table>
+
+    <!-- Enlaces de paginación -->
+    <div class="d-flex justify-content-center">
+        {{ $productos->links() }}
+    </div>
+
 </div>
 @endsection

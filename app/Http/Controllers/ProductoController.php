@@ -92,10 +92,13 @@ class ProductoController extends Controller
     $query = Producto::query();
 
     if ($request->has('search')) {
+         // Filtrar productos por nombre si hay una búsqueda
         $query->where('nombre', 'like', '%' . $request->search . '%');
     }
 
-    $productos = $query->get();
+    //$productos = $query->get();
+    // Paginación de productos, 10 por página
+    $productos = $query->paginate(10);
     return view('productos.index', compact('productos'));
 }
 
