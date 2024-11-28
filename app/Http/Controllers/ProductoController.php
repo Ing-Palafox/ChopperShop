@@ -87,11 +87,17 @@ use Illuminate\Http\Request;
 class ProductoController extends Controller
 {
     // Mostrar todos los productos
-    public function index()
-    {
-        $productos = Producto::all();
-        return view('productos.index', compact('productos'));
+    public function index(Request $request)
+{
+    $query = Producto::query();
+
+    if ($request->has('search')) {
+        $query->where('nombre', 'like', '%' . $request->search . '%');
     }
+
+    $productos = $query->get();
+    return view('productos.index', compact('productos'));
+}
 
     // Mostrar el formulario para crear un nuevo producto
     public function create()

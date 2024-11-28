@@ -3,6 +3,13 @@
 @section('content')
 <div class="container">
     <h1>Lista de Productos</h1>
+
+    <form method="GET" action="{{ route('productos.index') }}" class="mb-3">
+        <input type="text" name="search" class="form-control" placeholder="Buscar producto...">
+        <button type="submit" class="btn btn-primary mt-2">Buscar</button>
+    </form>
+
+
     <a href="{{ route('productos.create') }}" class="btn btn-primary">Agregar Producto</a>
     
     <style> .table th, .table td { color: white; }
