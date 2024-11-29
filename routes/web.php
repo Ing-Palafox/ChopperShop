@@ -30,6 +30,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [ProductoClienteController::class, 'index'])->name('cliente.home');
     //Ruta para los detalles de productos para cliente
     Route::get('/productos/{producto}', [ProductoClienteController::class, 'show'])->name('cliente.productos.show');
+    //ruta para el catalogo
+    Route::get('/catalogo', [ProductoController::class, 'catalogo'])->name('catalogo');
+    //Detalles de producto cliente en catalogo
+    Route::get('/producto/{id}', [ProductoController::class, 'show'])->name('product.detail');
+
+
 
 
 

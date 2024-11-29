@@ -197,4 +197,37 @@ class ProductoController extends Controller
         $producto->delete();
         return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
     }
+
+    public function catalogo(Request $request)
+    {
+    $query = Producto::query();
+
+    // Filtro por categoría
+    if ($request->has('categoria')) {
+        $query->where('categoria_id', $request->categoria);
+    }
+
+    // Filtro por rango de precio
+    if ($request->has('min_price') && $request->has('max_price')) {
+        $query->whereBetween('precio', [$request->min_price, $request->max_price]);
+    }
+
+    $productos = $query->paginate(12);
+    $categorias = Categoria::all(); // Obtener las categorías para los filtros
+
+    return view('client.catalogo', compact('productos', 'categorias'));
+    }
+
+    public function show($id)
+    {
+        // Buscar el producto por ID o lanzar un error 404 si no se encuentra
+        $producto = Producto::findOrFail($id);
+    
+        // Retornar la vista de detalles del producto
+        return view('client.product_detail', compact('producto'));
+    }
+    
+
+
+
 }
