@@ -100,8 +100,13 @@
     </table>
 
     <!-- Enlaces de paginación -->
-    <div class="d-flex justify-content-center">
+    <!-- <div class="d-flex justify-content-center">
         {{ $productos->links() }}
+    </div> -->
+
+    <!-- Paginación personalizada -->
+    <div class="d-flex justify-content-center">
+        {{ $productos->links('pagination::bootstrap-4') }} <!-- Aquí usas el layout de paginación de Bootstrap -->
     </div>
 
 </div>

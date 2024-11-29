@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ProductoClienteController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,6 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('productos', ProductoController::class);
     //Ruta para crear producto
     Route::get('/productos/create', [ProductoController::class, 'create'])->name('productos.create');
+    // Rutas para el cliente
+    Route::get('/', [ProductoClienteController::class, 'index'])->name('cliente.home');
+    //Ruta para los detalles de productos para cliente
+    Route::get('/productos/{producto}', [ProductoClienteController::class, 'show'])->name('cliente.productos.show');
 
 
 
