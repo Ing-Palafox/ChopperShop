@@ -45,7 +45,11 @@
                         <h5 class="card-title">{{ $producto->nombre }}</h5>
                         <p class="card-text text-muted">${{ number_format($producto->precio, 2) }}</p>
                         <a href="{{ route('product.detail', $producto->id) }}" class="btn btn-primary btn-sm">Ver detalles</a>
+
+                        <a href="{{ route('carrito.agregar', $producto->id) }}" class="btn btn-success">Añadir al carrito</a>
+
                     </div>
+                    
                 </div>
             </div>
         @endforeach

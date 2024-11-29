@@ -19,7 +19,19 @@
             <p class="text-white" style="font-size: 1.2rem;">{{ $producto->descripcion }}</p>
             <p class="text-white" style="font-size: 1.2rem;"><strong>Categoría:</strong> {{ $producto->categoria->nombre }}</p>
             
-            <a href="#" class="btn btn-success btn-lg mt-3">Añadir al carrito</a>
+            <!-- <a href="#" class="btn btn-success btn-lg mt-3">Añadir al carrito</a> -->
+
+            <form action="{{ route('carrito.agregar') }}" method="POST" class="mt-3">
+                 @csrf
+                <input type="hidden" name="producto_id" value="{{ $producto->id }}">
+                <div class="form-group">
+                    <label for="cantidad" class="text-white" style="font-size: 1.2rem;">Cantidad:</label>
+                    <input type="number" name="cantidad" id="cantidad" class="form-control" value="1" min="1" style="width: 100px;">
+                </div>
+                 <button type="submit" class="btn btn-success btn-lg mt-3">Añadir al carrito</button>
+            </form>
+
+
         </div>
     </div>
 </div>

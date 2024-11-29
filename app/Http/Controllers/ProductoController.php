@@ -226,6 +226,38 @@ class ProductoController extends Controller
         // Retornar la vista de detalles del producto
         return view('client.product_detail', compact('producto'));
     }
+
+    //agregar al carrito
+    public function agregarAlCarrito(Request $request)
+    {
+    $productoId = $request->input('producto_id');
+    $cantidad = $request->input('cantidad', 1); // Por defecto, 1 unidad
+
+    // Obtener producto por ID
+    $producto = Producto::findOrFail($productoId);
+
+    // Crear la estructura del carrito en la sesión
+    $carrito = session()->get('carrito', []);
+
+    // Si el producto ya está en el carrito, actualizamos la cantidad
+    if (isset($carrito[$productoId])) {
+        $carrito[$productoId]['cantidad'] += $cantidad;
+    } else {
+        // Si no está, lo añadimos con los detalles
+        $carrito[$productoId] = [
+            'nombre' => $producto->nombre,
+            'precio' => $producto->precio,
+            'cantidad' => $cantidad,
+            'imagen' => $producto->imagen,
+        ];
+    }
+
+    // Guardar el carrito en la sesión
+    session()->put('carrito', $carrito);
+
+    return redirect()->back()->with('success', 'Producto añadido al carrito.');
+    }
+
     
 
 
