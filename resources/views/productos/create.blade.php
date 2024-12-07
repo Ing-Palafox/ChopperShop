@@ -43,6 +43,21 @@
             <input type="number" name="cantidad" id="cantidad" class="form-control" required>
         </div>
 
+        <div class="form-group">
+            <label for="es_preventa">¿Es preventa?</label>
+            <input type="checkbox" name="es_preventa" id="es_preventa" value="1">
+        </div>
+
+        <div class="form-group">
+            <label for="fecha_lanzamiento">Fecha de lanzamiento</label>
+            <input type="date" name="fecha_lanzamiento" id="fecha_lanzamiento" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="stock_preventa">Stock para preventa</label>
+            <input type="number" name="stock_preventa" id="stock_preventa" class="form-control">
+        </div>
+
         <button type="submit" class="btn btn-success mt-3">Guardar</button>
     </form>
 </div>

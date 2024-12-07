@@ -110,40 +110,79 @@ class ProductoController extends Controller
     }
 
     // Guardar el nuevo producto
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nombre' => 'required|max:150',
-            'descripcion' => 'nullable',
-            'precio' => 'required|numeric',
-            'cantidad' => 'required|integer',
-            'categoria_id' => 'required|exists:categorias,id',
-            'imagen' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // Validación para imagen
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'nombre' => 'required|max:150',
+    //         'descripcion' => 'nullable',
+    //         'precio' => 'required|numeric',
+    //         'cantidad' => 'required|integer',
+    //         'categoria_id' => 'required|exists:categorias,id',
+    //         'imagen' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // Validación para imagen
+    //     ]);
             
-            // Subir la imagen
+    //         // Subir la imagen
+    // $imagenPath = null;
+    // if ($request->hasFile('imagen')) {
+    //     $imagenPath = $request->file('imagen')->store('productos', 'public');
+    // } else {
+    //     $imagenPath = null; // Si no se sube una imagen, asignamos null
+    // }
+
+    // // Crear el producto con la imagen
+    // Producto::create([
+    //     'nombre' => $request->nombre,
+    //     'descripcion' => $request->descripcion,
+    //     'precio' => $request->precio,
+    //     'cantidad' => $request->cantidad,
+    //     'categoria_id' => $request->categoria_id,
+    //     'imagen' => $imagenPath,  // Guardar la ruta de la imagen
+    // ]);
+
+    //     // Producto::create($request->all());
+    //     return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
+    //     return redirect()->back()->with('error', 'No se pudo crear el producto. Inténtalo nuevamente.');
+
+    // }
+
+
+    public function store(Request $request)
+{
+    $request->validate([
+        'nombre' => 'required|max:150',
+        'descripcion' => 'nullable',
+        'precio' => 'required|numeric',
+        'cantidad' => 'required|integer',
+        'categoria_id' => 'required|exists:categorias,id',
+        'imagen' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', 
+        'es_preventa' => 'nullable|boolean',
+        'fecha_lanzamiento' => 'nullable|date|after:today',
+        'stock_preventa' => 'nullable|integer|min:0',
+    ]);
+
     $imagenPath = null;
     if ($request->hasFile('imagen')) {
         $imagenPath = $request->file('imagen')->store('productos', 'public');
-    } else {
-        $imagenPath = null; // Si no se sube una imagen, asignamos null
     }
 
-    // Crear el producto con la imagen
     Producto::create([
         'nombre' => $request->nombre,
         'descripcion' => $request->descripcion,
         'precio' => $request->precio,
         'cantidad' => $request->cantidad,
         'categoria_id' => $request->categoria_id,
-        'imagen' => $imagenPath,  // Guardar la ruta de la imagen
+        'imagen' => $imagenPath,
+        'es_preventa' => $request->es_preventa ?? false,
+        'fecha_lanzamiento' => $request->fecha_lanzamiento,
+        'stock_preventa' => $request->stock_preventa,
     ]);
 
-        // Producto::create($request->all());
-        return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
-        return redirect()->back()->with('error', 'No se pudo crear el producto. Inténtalo nuevamente.');
+    return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
+    return redirect()->back()->with('error', 'No se pudo crear el producto. Inténtalo nuevamente.');
+}
 
-    }
+
+
 
     // Mostrar el formulario para editar un producto
     public function edit(Producto $producto)
@@ -153,7 +192,47 @@ class ProductoController extends Controller
     }
 
     // Actualizar el producto
-    public function update(Request $request, Producto $producto)
+//     public function update(Request $request, Producto $producto)
+// {
+//     $request->validate([
+//         'nombre' => 'required|max:150',
+//         'descripcion' => 'nullable',
+//         'precio' => 'required|numeric',
+//         'cantidad' => 'required|integer',
+//         'categoria_id' => 'required|exists:categorias,id',
+//         'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+//     ]);
+
+//     // Verificar si hay una nueva imagen
+//     if ($request->hasFile('imagen')) {
+//         // Eliminar la imagen anterior si existe
+//         if ($producto->imagen) {
+//             Storage::disk('public')->delete($producto->imagen);
+//         }
+
+//         // Guardar la nueva imagen
+//         $imagenPath = $request->file('imagen')->store('productos', 'public');
+//         $producto->imagen = $imagenPath;
+//     }
+
+//     // Actualizar los datos restantes
+//     $producto->update([
+//         'nombre' => $request->nombre,
+//         'descripcion' => $request->descripcion,
+//         'precio' => $request->precio,
+//         'cantidad' => $request->cantidad,
+//         'categoria_id' => $request->categoria_id,
+//     ]);
+
+//     // Guardar los cambios en la imagen, si se subió
+//     $producto->save();
+
+//     return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');
+// }
+
+
+
+public function update(Request $request, Producto $producto)
 {
     $request->validate([
         'nombre' => 'required|max:150',
@@ -161,35 +240,41 @@ class ProductoController extends Controller
         'precio' => 'required|numeric',
         'cantidad' => 'required|integer',
         'categoria_id' => 'required|exists:categorias,id',
-        'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'imagen' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        'es_preventa' => 'nullable|boolean',
+        'fecha_lanzamiento' => 'nullable|date|after:today',
+        'stock_preventa' => 'nullable|integer|min:0',
     ]);
 
-    // Verificar si hay una nueva imagen
     if ($request->hasFile('imagen')) {
-        // Eliminar la imagen anterior si existe
         if ($producto->imagen) {
             Storage::disk('public')->delete($producto->imagen);
         }
 
-        // Guardar la nueva imagen
-        $imagenPath = $request->file('imagen')->store('productos', 'public');
-        $producto->imagen = $imagenPath;
+        $producto->imagen = $request->file('imagen')->store('productos', 'public');
     }
 
-    // Actualizar los datos restantes
     $producto->update([
         'nombre' => $request->nombre,
         'descripcion' => $request->descripcion,
         'precio' => $request->precio,
         'cantidad' => $request->cantidad,
         'categoria_id' => $request->categoria_id,
+        'es_preventa' => $request->es_preventa ?? false,
+        'fecha_lanzamiento' => $request->fecha_lanzamiento,
+        'stock_preventa' => $request->stock_preventa,
     ]);
 
-    // Guardar los cambios en la imagen, si se subió
-    $producto->save();
+     // Guardar los cambios en la imagen, si se subió
+     $producto->save();
 
-    return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');
+
+    return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
 }
+
+
+
+
 
     // Eliminar un producto
     public function destroy(Producto $producto)
@@ -258,8 +343,31 @@ class ProductoController extends Controller
     return redirect()->back()->with('success', 'Producto añadido al carrito.');
     }
 
-    
+    //listar preventas
+    // public function listarPreventas()
+    // {
+    // $preventas = Producto::where('es_preventa', true)->paginate(10);
 
+    // return view('preventas.index', compact('preventas'));
+    // }
+
+    public function listarPreventas(Request $request)
+{
+    $query = Producto::where('es_preventa', true);
+
+    if ($request->has('categoria_id')) {
+        $query->where('categoria_id', $request->categoria_id);
+    }
+
+    if ($request->has('fecha_inicio') && $request->has('fecha_fin')) {
+        $query->whereBetween('fecha_lanzamiento', [$request->fecha_inicio, $request->fecha_fin]);
+    }
+
+    $preventas = $query->paginate(10);
+
+    $categorias = Categoria::all();
+    return view('preventas.index', compact('preventas', 'categorias'));
+}
 
 
 }

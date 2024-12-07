@@ -43,8 +43,16 @@ Route::middleware('auth')->group(function () {
     
     // Route::get('carrito/agregar/{producto}', [CarritoController::class, 'agregar'])->name('carrito.agregar');
 
-
     // Route::post('/carrito/eliminar/{producto}', [CarritoController::class, 'eliminar'])->name('carrito.eliminar');
+
+    //ruta para preventas
+    Route::get('/preventa/crear', [ProductoController::class, 'create'])->name('preventa.create');
+    Route::post('/preventa/guardar', [ProductoController::class, 'store'])->name('preventa.store');
+    Route::get('/preventas', [ProductoController::class, 'listarPreventas'])->name('preventas.index');
+
+    // Mostrar los detalles del producto de preventa
+    //Route::get('/preventas/{id}', [PreventaController::class, 'show'])->name('preventas.show');
+    
 
 
 

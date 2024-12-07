@@ -52,6 +52,21 @@
             </select>
         </div>
 
+        <div class="form-group">
+             <label for="es_preventa">¿Es preventa?</label>
+             <input type="checkbox" name="es_preventa" id="es_preventa" value="1" {{ $producto->es_preventa ? 'checked' : '' }}>
+        </div>
+
+        <div class="form-group">
+            <label for="fecha_lanzamiento">Fecha de lanzamiento</label>
+            <input type="date" name="fecha_lanzamiento" id="fecha_lanzamiento" class="form-control" value="{{ $producto->fecha_lanzamiento }}">
+        </div>
+
+        <div class="form-group">
+            <label for="stock_preventa">Stock para preventa</label>
+            <input type="number" name="stock_preventa" id="stock_preventa" class="form-control" value="{{ $producto->stock_preventa }}">
+        </div>
+
         <div class="mb-3">
             <label for="imagen_actual" class="form-label">Imagen Actual</label>
             <br>
